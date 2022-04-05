@@ -1,0 +1,121 @@
+﻿
+@model IEnumerable<MVCVraboteni.Models.VraboteniClass>
+
+@{
+    ViewData["Title"] = "Lista na vraboteni";   
+}   
+
+ <h4>Вработени</h4>
+ <hr/>
+
+    <form asp-controller="Vraboteni" asp-action="Index">
+        <p>
+            Пребарај по име: <input type="text" name="SearchString" />
+            <input type="submit" value="Filter" />
+        </p>
+    </form>
+
+
+<table class="table" id="VrabotenGrid">
+    <thead>
+        <tr>
+            <th>
+                ID
+                @*@Html.DisplayNameFor(model => model.ID)*@
+            </th>
+            <th>
+                Име
+                @*@Html.DisplayNameFor(model => model.Ime)*@
+            </th>
+            <th>
+                Презиме
+                @*@Html.DisplayNameFor(model => model.Prezime)*@
+            </th>
+            <th>
+                Датум на вработување
+                @*@Html.DisplayNameFor(model => model.DatumNaVrabotuvanje)*@
+            </th>
+            <th>
+                Плата
+                @*@Html.DisplayNameFor(model => model.Plata)*@
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.ID
+                @*@Html.DisplayFor(modelItem => item.ID)*@
+            </td>
+            <td>
+                @item.Ime
+                @*@Html.DisplayFor(modelItem => item.Ime)*@
+            </td>
+            <td>
+                @item.Prezime
+                @*@Html.DisplayFor(modelItem => item.Prezime)*@
+            </td>
+            <td>
+                @item.DatumNaVrabotuvanje.ToShortDateString()
+                @*@Html.DisplayFor(modelItem => item.DatumNaVrabotuvanje)*@
+            </td>
+            <td>
+                @item.Plata.ToString("C")
+                @*@Html.DisplayFor(modelItem => item.Plata)*@
+            </td>
+            <td>
+                <a class="details" href="javascript:;">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+<div id="partialModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Информации за вработениот</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+<script type="text/javascript">
+    $(function () {
+        $("#VrabotenGrid .details").click(function () {
+            var vrabotenID = $(this).closest("tr").find("td").eq(0).html();
+            
+            $.ajax({
+                type: "POST",
+                url: "/Vraboteni/Details",
+                data: { "vrabotenID": vrabotenID  },
+                success: function (response) {
+                    $("#partialModal").find(".modal-body").html(response);
+                    $("#partialModal").modal('show');
+                },
+                failure: function (response) {                    
+                    alert(response);
+                },
+                error: function (response) {                    
+                    alert(response);
+                }
+            });
+                       
+        });
+    }); 
+</script>
+}

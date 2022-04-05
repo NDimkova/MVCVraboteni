@@ -1,0 +1,15 @@
+﻿@model MVCVraboteni.Models.VraboteniClass
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <h2>ID: @Model.ID</h2>
+        <p>Име: @Model.Ime</p>
+        <p>Презиме: @Model.Prezime</p>
+        <p>Датум на вработување: @Model.DatumNaVrabotuvanje.ToShortDateString()</p>
+        <p>Плата: @Model.Plata.ToString("C")</p>
+    </div>
+</div>
